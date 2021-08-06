@@ -1,6 +1,7 @@
 import torchvision
 from torchvision.datasets import MNIST
 import torch
+from torch.utils.data import DataLoader
 
 class MNISTDataset():
   def __init__(self, root_dir, train_val_ratio=0.8, download=True, transform=None) -> None:
@@ -12,3 +13,13 @@ class MNISTDataset():
 
       self.train_set = train_set
       self.val_set = val_set
+
+  def train_loader(self, batch_size=64, shuffle=True):
+    return DataLoader(self.train_set, batch_size=batch_size, shuffle=shuffle)
+
+  def val_loader(self, batch_size=64, shuffle=True):
+    return DataLoader(self.val_set, batch_size=batch_size, shuffle=shuffle)
+
+  def test_loader(self, batch_size=64, shuffle=True):
+    return DataLoader(self.test_set, batch_size=batch_size, shuffle=shuffle)
+

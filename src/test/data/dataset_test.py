@@ -37,3 +37,19 @@ class TestMNISTData(unittest.TestCase):
     dataset = MNISTDataset('/some_dir', train_val_ratio=0.9)
     self.assertEqual(len(dataset.train_set), 54000) 
     self.assertEqual(len(dataset.val_set), 6000)
+
+
+  @patch("dataset.mnist_dataset.DataLoader")
+  def test_data_loaders(self, loader_mock, mnist_mock):
+    mnist_mock.return_value = [None] * 60000
+
+    dataset = MNISTDataset('/some_dir')
+
+    dataset.train_loader()
+    loader_mock.assert_called_with(dataset.train_set, batch_size=64, shuffle=True)
+
+    dataset.val_loader()
+    loader_mock.assert_called_with(dataset.val_set, batch_size=64, shuffle=True)
+
+    dataset.test_loader()
+    loader_mock.assert_called_with(dataset.test_set, batch_size=64, shuffle=True)
