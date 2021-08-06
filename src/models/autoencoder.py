@@ -14,11 +14,9 @@ class CosineSimilarityLoss(nn.Module):
     M = G.shape[0]
     
     C = torch.eq(class_labels.unsqueeze(0), class_labels.unsqueeze(0).T)
-    print(C)
 
     # If they have the same class similarity should be close to 1, otherwise it should be close to -1
     G = torch.where(C == True, 1 - G, 1 + G)
-    print(G)
     return torch.sum(G) / M**2
 
 
