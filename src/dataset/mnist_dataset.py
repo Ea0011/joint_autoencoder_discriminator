@@ -13,7 +13,7 @@ class MNISTDataset(pl.LightningDataModule):
     self.transform = transform
     self.root_dir = root_dir
 
-  def setup(self):
+  def setup(self, stage):
     mnist_data_train = MNIST(self.root_dir, train=True, download=self.download, transform=self.transform)
     self.test_set = MNIST(self.root_dir, train=False, download=self.download, transform=self.transform)
 
@@ -23,12 +23,12 @@ class MNISTDataset(pl.LightningDataModule):
     self.train_set = train_set
     self.val_set = val_set
 
-  def train_loader(self):
+  def train_dataloader(self):
     return DataLoader(self.train_set, batch_size=self.batch_size, shuffle=True)
 
-  def val_loader(self):
-    return DataLoader(self.val_set, batch_size=self.batch_size, shuffle=True)
+  def val_dataloader(self):
+    return DataLoader(self.val_set, batch_size=self.batch_size, shuffle=False)
 
-  def test_loader(self):
-    return DataLoader(self.test_set, batch_size=self.batch_size, shuffle=True)
+  def test_dataloader(self):
+    return DataLoader(self.test_set, batch_size=self.batch_size, shuffle=False)
 
